@@ -25,7 +25,14 @@
 				padding: 2px 10px 2px 10px;
 			}
 			
-					
+			#linkshare{
+				position: absolute;
+				/*top: 20%;
+				left: 55%;*/
+				top: 2%;
+				left: 66%;			
+				width: 5em;
+			}
 			#inp{
 				position: absolute;
 				/*top: 20%;
@@ -93,7 +100,7 @@
 			var sys=null;
 	</script>
 	</head>	
-	<body onload="simularHalf()">				
+	<body onload="simularHalfFromURL()">				
 		<div id="buttons">				
 			<div style="width: 10%;display: inline-block; "><input class="boton" id="playstop" type="button" value="▶" onclick="iniciarDetenerAnimacion()"></div><div style="width: 90%;display: inline-block;vertical-align: middle;"><input id="rango"  class="rango" type="range"  oninput="moverCursor(this.value)" onchange="/*simular(this.value)*/"/></div>	
 		</div>
@@ -103,18 +110,8 @@
 			<div id='container_div'></div>
 		</div>
 		<div style=" text-align: center; ">
-		<textarea id="inp"  onkeyup="onTestChange()">sp=100
-gain=1
-tao=2.2
-ini=0
-dt=0.05
-
-kp=0.1
-ki=2
-kd=0.4
-
-minAccion=-300
-maxAccion=300</textarea> 				
+		<input  id="linkshare" title="Link to share!" type="button" value="&#128279;" onclick="window.open(getURLFromInput('inp'), '_blank').focus();">
+		<textarea id="inp"  onkeyup="onTestChange()"></textarea> 				
 		
 		</div>
 	</body>
@@ -145,7 +142,45 @@ maxAccion=300</textarea>
 			//atResize();
 			var nGlobal=1;//tiempo discreto global
 	     	
-	     	function simularHalf () {simular(getWidthBrowserPixels()/2); atResize();};
+	     	function setInputFromURL(inputElement){
+	     		var urlParams = new URLSearchParams(window.location.search);
+				// getparamX = urlParams.get('X');				
+				document.getElementById(inputElement).value="";
+				if(Array.from(urlParams).length>0){
+					urlParams.forEach((v,k)=>{ 
+					//eval(k+'='+v);						
+						document.getElementById(inputElement).value+=k+'='+v+'\n';
+
+					});
+
+				}else{					//DEFAULT
+document.getElementById(inputElement).value=`sp=100
+gain=1
+tao=2.2
+ini=0
+dt=0.05
+
+kp=0.1
+ki=2
+kd=0.4
+
+minAccion=-300
+maxAccion=300`;
+				}
+	     	}
+	     	function getURLFromInput(inputElement){
+	     		var lines=document.getElementById(inputElement).value.split('\n');	     		
+				lines.forEach((line,k)=>lines[k]=line.trim()); //saca espacios
+				var nonEmptyLines=lines.filter(line=>(typeof(line)!='undefined'&&(line!=null) && line.length>0)); //elimina renglones libres, "enter"
+				var strURLFromInput=nonEmptyLines.join('&');
+				var currentURLWithoutParams=window.location.href.split('?')[0];
+	     		return currentURLWithoutParams+'?'+strURLFromInput;
+	     	}
+	     	function simularHalfFromURL () {	     		
+	     		setInputFromURL('inp');					
+	     		simular(getWidthBrowserPixels()/2); atResize();
+ 
+	     	};
 
 	     	function moverCursor(value){
 	     		nGlobal=Number(value);
