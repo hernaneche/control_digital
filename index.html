@@ -358,7 +358,7 @@ maxAccion=300`;
 				 		sys=null;
 				 		eval(lastScript+'\n');  			   	
 				 	}else{
-				 		
+				 		//si no hay cambios no evalúa
 				 	}
 				 }
 
@@ -454,10 +454,13 @@ maxAccion=300`;
 			console.oldlog = console.log;
 		
 			console.log = function(message) {
-			    console.oldlog(message);
+				if(message.indexOf('[CTRL')==-1){
+			    	console.oldlog(message);
+				}
 			    document.getElementById('out').innerHTML+= '<br>'+message.replaceAll('\n','<br>')  ;
 			};
-			console.error = console.debug = console.info =  console.log
+			//console.error = console.debug = console.info =  console.log
+			
 			/*var div = document.getElementById('container_div');
 			div.style.height="100%"*/
 
