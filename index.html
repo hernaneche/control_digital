@@ -30,8 +30,7 @@
 				/*top: 20%;
 				left: 55%;*/
 				top: 2%;
-				left: 66%;			
-				width: 5em;
+				left: 66%;							
 			}
 			#inp{
 				position: absolute;
@@ -87,6 +86,7 @@
 		</style>		
 		<script type="module" src="js/controljs.min.js"></script>		
 	<script type="text/javascript">
+		//globales
 			var sp;//=100;
 			var tao;
 			var ini;
@@ -98,6 +98,8 @@
 			var minAccion;//=1000;
 			var dt;			
 			var sys=null;
+			var n;
+			var play=false;			
 	</script>
 	</head>	
 	<body onload="simularHalfFromURL()">				
@@ -110,14 +112,39 @@
 			<div id='container_div'></div>
 		</div>
 		<div style=" text-align: center; ">
-		<input  id="linkshare" title="Link to share!" type="button" value="&#128279;" onclick="window.open(getURLFromInput('inp'), '_blank').focus();">
+			
+		<div id="linkshare">
+			<input style="width: 5em;" title="Reset" type="button" value="&#x21bb;" onclick="reset()">
+			<input style="width: 5em;" title="Copiar enlace a compartir" type="button" value="&#x1f4cb;" onclick="copyShare()">
+			<input style="width: 5em;" title="Ir a enlace" type="button" value="&#128279;" onclick="goLink()">			
+		</div>
 		<textarea id="inp"  onkeyup="onTestChange()"></textarea> 				
 		
 		</div>
 	</body>
 	<script type="text/javascript" src="js/gcanvas.min.js"></script>
 	<script type="text/javascript">
-			
+			function reset(){
+				document.getElementById('inp').value='';
+				var strURL=getURLFromInput('inp');			
+				window.open(strURL,"_self");
+			}
+			function copyShare(){	
+				var strURL=getURLFromInput('inp');			
+
+				navigator.clipboard.writeText(strURL).then(function() {
+
+				}, function(e) {
+				  console.log('no copy:'+e);
+				});
+
+  				//window.open(strURL);//, '_blank').focus();
+			}
+			function goLink(){	
+				var strURL=getURLFromInput('inp');			
+
+  				window.open(strURL, '_blank').focus();
+			}
 			var getWidthBrowserPixels;
 			var widthBrowserForText;
 			getWidthBrowserPixels=()=>{return parseInt(window.getComputedStyle(document.body).width)/*/(1*radioDefault)*/;} // radioDefault es el tamaño de los puntos, 2*r = diametro evita solaparse	
@@ -154,6 +181,7 @@
 					});
 
 				}else{					//DEFAULT
+					//esta identacion horrible es así
 document.getElementById(inputElement).value=`sp=100
 gain=1
 tao=2.2
@@ -207,15 +235,24 @@ maxAccion=300`;
 					continuarAnimacion();
 				}
 			}
-			function iniciarDetenerAnimacion(){
-				if(document.getElementById('playstop').value=='▶'){					
-					    lastTime=0;
+
+			function iniciarAnimacion(){
+						lastTime=0;
 						document.getElementById('playstop').value='◼';
 						document.getElementById('playstop').style.color="darkred";
 						continuarAnimacion();
+			}
+
+			function detenerAnimacion(){
+				document.getElementById('playstop').value='▶';
+				document.getElementById('playstop').style.color="green";
+			}
+
+			function iniciarDetenerAnimacion(){
+				if(document.getElementById('playstop').value=='▶'){					
+					    iniciarAnimacion();
 				}else{
-						document.getElementById('playstop').value='▶';
-						document.getElementById('playstop').style.color="green";
+						detenerAnimacion();
 				}
 			}
 
@@ -351,17 +388,31 @@ maxAccion=300`;
 					 }
 				 	nGlobal=k;
 				 }
-
+				 var huboCambios=false;
 				 if(evaluar){				 	
 				 	if(lastScript!==document.getElementById('inp').value){				 						 		
 				 		lastScript=document.getElementById('inp').value;
 				 		sys=null;
-				 		eval(lastScript+'\n');  			   	
+				 		var nLast=nGlobal;
+				 		n=nGlobal;
+				 		eval(lastScript+'\n');  	
+				 		nGlobal=n;
+				 		if(nGlobal!=nLast){
+				 			document.getElementById('rango').value=nGlobal;
+				 		}
+				 		huboCambios=true;		   	
 				 	}else{
 				 		//si no hay cambios no evalúa
+				 		
 				 	}
 				 }
-
+				 if(huboCambios){
+				 	detenerAnimacion();
+				 }
+				 if(play){
+				 	play=false;				 	
+				 	iniciarAnimacion();
+				 }
 				
 				document.getElementById('out').innerHTML='';						 				 
 			
@@ -398,7 +449,7 @@ maxAccion=300`;
 						}		
 						
 						
-						 var res=simulacion(sp, s, kp,ki,kd, minAccion, maxAccion, nGlobal);
+						 var res=simulacion(sp, s, kp,ki,kd, minAccion, maxAccion, nGlobal,drawHere);
 						 setPointCallCounter=0;
 						 //console.log(JSON.stringify(res[0]));
 
@@ -449,15 +500,15 @@ maxAccion=300`;
 								
 			}
 			
-			
+			function drawHere(message){
+				document.getElementById('out').innerHTML+= '<br>'+message.replaceAll('\n','<br>')  ;
+			}
 			
 			console.oldlog = console.log;
 		
-			console.log = function(message) {
-				if(message.indexOf('[CTRL')==-1){
-			    	console.oldlog(message);
-				}
-			    document.getElementById('out').innerHTML+= '<br>'+message.replaceAll('\n','<br>')  ;
+			console.log = function(message) {				
+			    console.oldlog(message);
+				drawHere(message);
 			};
 			//console.error = console.debug = console.info =  console.log
 			
