@@ -177,7 +177,11 @@
 				if(Array.from(urlParams).length>0){
 					urlParams.forEach((v,k)=>{ 
 					//eval(k+'='+v);						
-						document.getElementById(inputElement).value+=k+'='+v+'\n';
+						if(v!=''){
+							document.getElementById(inputElement).value+=k+'='+v+'\n';
+						}else{
+							document.getElementById(inputElement).value+=k+'\n';
+						}
 
 					});
 
