@@ -121,13 +121,24 @@
 			<input style="width: 5em;" title="Reset" type="button" value="&#x21bb;" onclick="reset()">
 			<input style="width: 5em;" title="Copiar enlace a compartir" type="button" value="&#x1f4cb;" onclick="copyShare()">
 			<input style="width: 5em;" title="Ir a enlace" type="button" value="&#128279;" onclick="goLink()">			
+			<input style="width: 5em;" id="hideShow" title="Ocultar/Mostrar" type="button" value="&#9660;" onclick="hideShow()">			
 		</div>
-		<textarea id="inp"  onkeyup="onTestChange()"></textarea> 				
+
+		<textarea style="visibility: hidden;" id="inp"  onkeyup="onTestChange()"></textarea> 				
 		
 		</div>
 	</body>
 	<script type="text/javascript" src="js/gcanvas.min.js"></script>
 	<script type="text/javascript">
+			function hideShow(){
+				if(document.getElementById('inp').style.visibility!='hidden'){					
+					document.getElementById('hideShow').value='\u25BC';
+					document.getElementById('inp').style.visibility='hidden';
+				}else{
+					document.getElementById('hideShow').value='\u25B2';
+					document.getElementById('inp').style.visibility='visible';
+				}								
+			}
 			function reset(){
 				document.getElementById('inp').value='';
 				var strURL=getURLFromInput('inp');			
