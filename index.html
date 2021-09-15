@@ -99,6 +99,8 @@
 			var minAccion;//=1000;
 			var dt;			
 			var sys=null;
+			var actuador=null;
+			var sensor=null;
 			var n;
 			var play=false;			
 	</script>
@@ -397,7 +399,9 @@ maxAccion=300`;
 				 if(evaluar){				 	
 				 	if(lastScript!==document.getElementById('inp').value){				 						 		
 				 		lastScript=document.getElementById('inp').value;
+				 		sensor=null;
 				 		sys=null;
+				 		actuador=null;
 				 		var nLast=nGlobal;
 				 		n=nGlobal;
 				 		eval(lastScript+'\n');  	
@@ -420,8 +424,7 @@ maxAccion=300`;
 				 }
 				
 				document.getElementById('out').innerHTML='';						 				 
-			
-				  
+							 
 				 if(sys==null){
 					s=new Sistema1(gain, tao, ini, dt);
 				 }else{
@@ -454,7 +457,7 @@ maxAccion=300`;
 						}		
 						
 						
-						 var res=simulacion(sp, s, kp,ki,kd, minAccion, maxAccion, nGlobal,drawHere);
+						 var res=simulacion(sp, sensor, s, actuador, kp,ki,kd, minAccion, maxAccion, nGlobal,drawHere);
 						 setPointCallCounter=0;
 						 //console.log(JSON.stringify(res[0]));
 
@@ -499,10 +502,7 @@ maxAccion=300`;
 						 //console.log(JSON.stringify(open_loop_sim));
 						 plot(open_loop_sim);
 						 plotRef('sistema original');
-				}
-
-				
-								
+				}				
 			}
 			
 			function drawHere(message){
