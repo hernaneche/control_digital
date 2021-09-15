@@ -102,7 +102,8 @@
 			var actuador=null;
 			var sensor=null;
 			var n;
-			var play=false;			
+			var play=false;	
+			var grafica=[0,1,2,3,4];		
 	</script>
 	</head>	
 	<body onload="simularHalfFromURL()">				
@@ -470,8 +471,21 @@ maxAccion=300`;
 						 //plotColors('red','green','blue','white');				 
 						 plotOnResize(atResize)
 
-						 plot(res[0],res[1],res[2], res[3], res[4]);				 				 
-						 plotRef('sistema original','set point','salida controlada','error','acción de control');
+						 
+						 var toPlot=[];
+						 var toPlotTextDefault=['sistema original','set point','salida controlada','error','acción de control'];
+						 var toPlotText=[];
+						 for(var i=0;i<5;i++){						 	
+						 	if(grafica.includes(i)){
+						 		toPlot.push(res[i]);
+						 		toPlotText.push(toPlotTextDefault[i]);
+						 	}
+						 }
+						 
+						 //plot(res[0],res[1],res[2], res[3], res[4]);
+						 //plotRef('sistema original','set point','salida controlada','error','acción de control');						 
+						 plot( ...toPlot);
+						 plotRef( ...toPlotText);
 
 						 /*
 						 plot(res[0],res[1],res[2]);				 				 
