@@ -121,7 +121,7 @@
 			<input style="width: 5em;" title="Reset" type="button" value="&#x21bb;" onclick="reset()">
 			<input style="width: 5em;" title="Copiar enlace a compartir" type="button" value="&#x1f4cb;" onclick="copyShare()">
 			<input style="width: 5em;" title="Ir a enlace" type="button" value="&#128279;" onclick="goLink()">			
-			<input style="width: 5em;" id="hideShow" title="Ocultar/Mostrar" type="button" value="&#9660;" onclick="hideShow()">			
+			<input style="width: 5em;" id="hideShow" title="Ocultar/Mostrar Comandos" type="button" value="&#9660;" onclick="hideShow()">			
 		</div>
 
 		<textarea style="visibility: hidden;" id="inp"  onkeyup="onTestChange()"></textarea> 				
@@ -140,10 +140,13 @@
 				}								
 			}
 			function reset(){
-				document.getElementById('inp').value='';
-				var strURL=getURLFromInput('inp');			
-				window.open(strURL,"_self");
+				if(confirm("Borra la lista de comandos ¿Seguro?")){
+					document.getElementById('inp').value='';
+					var strURL=getURLFromInput('inp');			
+					window.open(strURL,"_self");
+				}
 			}
+
 			function copyShare(){	
 				var strURL=getURLFromInput('inp');			
 
@@ -201,20 +204,34 @@
 
 				}else{					//DEFAULT
 					//esta identacion horrible es así
-document.getElementById(inputElement).value=`sp=100
-gain=1
-tao=2.2
-ini=0
-dt=0.05
+document.getElementById(inputElement).value=/*`sp=30
+ini=0, dt=0.05
+gain=1, tao=0.2
+kp=1.5
+ki=.8
+kd=1
+minAccion=-300, maxAccion=300
+sys=new Sistema2(gain, tao, .5, 0, 0, dt)
+
+//sensor=new Sistema1(1, .25, 0, dt)
+//actuador=new Sistema1(1, .25, 0, dt)
+
+grafico=[0,1,2,3]
+`;*/
+`sp=100
+ini=0, dt=0.05
+gain=1, tao=2.2
 
 kp=0.1
 ki=2
 kd=0.4
+minAccion=-300, maxAccion=300
 
 sys=new Sistema1(gain, tao, ini, dt)
 
-minAccion=-300
-maxAccion=300`;
+//sensor=new Sistema1(1, .25, 0, dt)
+//actuador=new Sistema1(1, .25, 0, dt)
+grafica=[0,1,2,3,4]`;
 				}
 	     	}
 	     	function getURLFromInput(inputElement){
