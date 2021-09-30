@@ -6,7 +6,9 @@
 		<title>Control Digital</title>
 		<style type="text/css">
 			html,body{
-				background-color: rgba(45, 55, 65, 1.0);
+				/*background-color: rgba(45, 55, 65, 1.0);*/
+				background-color: rgba(22, 30, 35, 1.0);
+				/*background-color: black;*/
                 margin:0;
                 height: 100%;
                 overflow: hidden               
@@ -42,7 +44,8 @@
 				width: 22%;
 				height: 30%;
 				background-color: rgba(150,150,150,.05);
-				color: white;
+				/*color: white;*/
+				color:  rgba(211,240,255,.9);
 				font-family: arial;
 				font-size: 17px;
 				/*height: 3em;*/
@@ -124,7 +127,7 @@
 			<input style="width: 5em;" id="hideShow" title="Ocultar/Mostrar Comandos" type="button" value="&#9660;" onclick="hideShow()">			
 		</div>
 
-		<textarea style="visibility: hidden;" id="inp"  onkeyup="onTestChange()"></textarea> 				
+		<textarea spellcheck="false" style="visibility: visible;" id="inp"  onkeyup="onTestChange()"></textarea> 				
 		
 		</div>
 	</body>
@@ -221,7 +224,6 @@ grafico=[0,1,2,3]
 `sp=100
 ini=0, dt=0.05
 gain=1, tao=2.2
-
 kp=0.1
 ki=2
 kd=0.4
@@ -229,9 +231,9 @@ minAccion=-300, maxAccion=300
 
 sys=new Sistema1(gain, tao, ini, dt)
 
+grafica=[0,1,2,3,4]
 //sensor=new Sistema1(1, .25, 0, dt)
-//actuador=new Sistema1(1, .25, 0, dt)
-grafica=[0,1,2,3,4]`;
+//actuador=new Sistema1(1, .25, 0, dt)`;
 				}
 	     	}
 	     	function getURLFromInput(inputElement){
